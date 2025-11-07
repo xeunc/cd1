@@ -1,46 +1,25 @@
-name: Python-Test
-on: push
+name: Add Numbers
+
+on: [push]
+
 jobs:
-  test:
+  add-numbers:
     runs-on: ubuntu-latest
+
+    env:
+      NUM1: 10  # Workflow 환경 변수 설정
+    
     steps:
-      - name: Checkout code
+      - name: Check out code
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'  # Specify your desired Python version here
-
-      - name: Run unit tests
-        run: |
-          python -m unittest discover -s . -p "test_*.py"
-    test2:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
+      
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-
-      - name: Run other tests
+      
+      - name: Run add_numbers.py with environment variables and secrets
+        env:
+          NUM2: ${{ secrets.NUM2 }}  # Secrets에서 NUM2 가져오기
         run: |
-          python -m unittest discover -s . -p "extra_*.py"
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: [test, test2]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Run main.py
-        run: python main.py
+          python add_numbers.py 
